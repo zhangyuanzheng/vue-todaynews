@@ -5,6 +5,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import App from './App'
 import router from './router'
+import store from './store/index'
 // import 'lib-flexible'
 Vue.use(MintUI)
 
@@ -19,6 +20,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   beforeCreate(){
     // var winW = document.documentElement.clientWidth || document.body.clientWidth;
     // document.documentElement.style.fontSize = winW /3.75 + "px";

@@ -1,13 +1,15 @@
 <template>
   <div id="navbar" >
     <mt-navbar v-model="mysel">
-        <mt-tab-item id="1">推荐</mt-tab-item>
+        <!-- <mt-tab-item id="1">推荐</mt-tab-item>
         <mt-tab-item id="2">视频</mt-tab-item>
         <mt-tab-item id="3">热点</mt-tab-item>
         <mt-tab-item id="4">社会</mt-tab-item>
         <mt-tab-item id="5">娱乐</mt-tab-item>
         <mt-tab-item id="6">军事</mt-tab-item>
-        <mt-tab-item id="7">科技</mt-tab-item>
+        <mt-tab-item id="7">科技</mt-tab-item>  -->
+
+         <mt-tab-item :id="item.id" v-for='(item,index) in resData' :key='index'>{{item.type}}</mt-tab-item>
     </mt-navbar>
     <div class='moreBtn'>
       <i> <img src='../assets/images/fonts/shadow.png' />  </i> 
@@ -19,11 +21,14 @@
 <script>
 export default {
   name: 'navbar',
-  props:['sel'],
+  props:['sel','resData'],
   data(){
     return{
       mysel:this.sel
     }
+  },
+  mounted(){
+    console.log(this.resData);
   },
   watch:{
     sel(val){

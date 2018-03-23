@@ -1,12 +1,12 @@
 <template>
-  <div class="loadmore" >
+  <div class="loadmore">
       <mt-loadmore :top-method="loadTop" @top-status-change="handleTopChange" ref="loadmore" :maxDistance="maxDistance" :autoFill='auto'> 
         <div class="topTips animated" :class='finish?"fadeInDown":"fadeOut"' v-if='showTips'>
             <span>为您推荐了{{length}}条新闻</span> 
             <!-- <span>没用最新的内容了</span> 
             <span>网络请求失败,请检查网络</span>  -->
         </div>
-        <ul  v-infinite-scroll="loadBottom" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+        <ul  v-infinite-scroll="loadBottom" infinite-scroll-disabled="loading" infinite-scroll-distance="10" :id='this.id'>
           <li v-for="(item,index) in newslist" :key='index' class='lists'>
             <div class='item_box' v-if="item.mode == 1"> 
                 <div class="title">{{item.title}}</div>
@@ -43,8 +43,6 @@
                   <span class="reader">{{item.reader}}阅读</span>
                 </div>
             </div>
-
-
           </li>
         </ul>
 
@@ -56,9 +54,11 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+
 export default {
   name: "loadmore",
-   props:['sel','type'],
+  props:["sel","type","id","resData"],
   data() {
     return {
       topStatus: "",
@@ -66,55 +66,23 @@ export default {
       finish: false,
       showTips: false,
       newslist: [],
-      auto:false,
-      loading:false,
+      auto: false,
+      loading: false,
       length: 0
     };
   },
+ 
   methods: {
+    ...mapGetters(["newsDetail"]),
     dataloading() {
       if (this.sel == this.type) {
-        let resData = [
-          {
-            mode: "1",
-            title: "加多宝总裁、副总同时被解职  新总裁上任即宣布：3年内上市",
-            ishot: true,
-            source: "每日经济新闻",
-            reader: 200,
-            imgsrc: ""
-          },
-          {
-            mode: "1",
-            title: "加多宝总裁、副总同时被解职  新总裁上任即宣布：3年内上市",
-            ishot: true,
-            source: "每日经济新闻",
-            reader: 200,
-            imgsrc: [
-              require("../assets/images/1.jpeg"),
-              require("../assets/images/2.jpeg"),
-              require("../assets/images/3.jpeg")
-            ]
-          },
-          {
-            mode: "2",
-            title: "加多宝总裁、副总同时被解职  新总裁上任即宣布：3年内上市",
-            ishot: false,
-            source: "每日经济新闻",
-            reader: 200,
-            imgsrc: require("../assets/images/1.jpeg")
-          },
-          {
-            mode: "3",
-            title: "加多宝总裁、副总同时被解职  新总裁上任即宣布：3年内上市",
-            ishot: false,
-            source: "每日经济新闻",
-            reader: 200,
-            imgsrc: require("../assets/images/4.jpeg")
-          }
-        ];
-        this.length = resData.length;
+        console.log('dataloading');
+        let news = this.resData.newsLists;
+        this.length = news.length;
+        // console.log(news);
+
         setTimeout(() => {
-          this.newslist.unshift(...resData);
+          this.newslist.unshift(...news);
           this.loading = false;
           this.finish = true;
           this.showTips = true;
@@ -132,13 +100,17 @@ export default {
       this.dataloading();
     },
     loadBottom() {
-      this.loading = true;
+      console.log('loadBottom');
+      this.loading = false;
       this.dataloading();
     }
   },
+  mounted(){
+//    console.log(this.$store.state);
+  },
   watch: {
-    sel(val){
-      this.dataloading();
+    sel(val) {
+      document.getElementById(this.id).innerText=='' && this.dataloading();
     },
     finish(val) {
       if (val) {

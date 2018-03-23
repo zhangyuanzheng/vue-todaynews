@@ -9,20 +9,27 @@
                 </div>
             </div>
           </header>
-          <nav-bar :sel='selected' @on-select-change='onSelectChange'></nav-bar>
+          <nav-bar :sel='selected' @on-select-change='onSelectChange' :resData='resData'></nav-bar>
         </div>
         
         <div class='container'>
           <mt-tab-container v-model="selected" swipeable>
-            <mt-tab-container-item id="1">
-                <load-more  :sel='selected' type='1'></load-more>
+            <!-- <mt-tab-container-item id="1">
+                <load-more  :sel='selected' type='1' id='s1'></load-more>
             </mt-tab-container-item>
             <mt-tab-container-item id="2">
-               <load-more  :sel='selected' type='2'></load-more>
+               <load-more  :sel='selected' type='2' id='s2'></load-more>
             </mt-tab-container-item>
             <mt-tab-container-item id="3">
-               <load-more  :sel='selected' type='3'></load-more>    
+               <load-more  :sel='selected' type='3' id='s3'></load-more>    
+            </mt-tab-container-item> -->
+
+            <mt-tab-container-item :id="item.id" v-for="(item,index) in resData" :key='index'>
+                <load-more  :sel='selected' :type='item.id' :id ="'s'+index" :resData="resData[item.id-1]"></load-more>
             </mt-tab-container-item>
+
+
+            
           </mt-tab-container>
         </div> 
  
@@ -31,6 +38,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
 import tabBar from "@/components/tabbar";
 import navBar from "@/components/navbar";
 import loadMore from "@/components/loadmore";
@@ -41,14 +49,19 @@ export default {
   data() {
     return {
       hot_topic: "庆祝两会顺利召开",
-      selected: "1"
+      selected: "1",
+      resData: [],
     };
   },
   methods: {
     onSelectChange(val) {
       this.selected = val;
       // console.log(this.selected)
-    }
+    },
+    
+  },
+  mounted(){
+    this.resData = this.$store.state;
   }
 };
 </script> 
