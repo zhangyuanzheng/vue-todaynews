@@ -1,8 +1,8 @@
 <template>
    <div id="tabbar">
-      <mt-tabbar v-model="selected" fixed>  
-        <mt-tab-item :id="item.id" v-for="(item, index) in tabbarList" :key="index">  
-          <img slot="icon" :src=' selected == item.id ? item.actSrc : item.src'>  
+      <mt-tabbar v-model="selected">  
+        <mt-tab-item :id="item.id" v-for="(item, index) in tabbarList" :key="index" @click.native="$router.push('/index/'+item.router+'')">  
+          <img slot="icon" :src=' selected == item.id ? item.actSrc : item.src' >  
           {{item.name}}  
         </mt-tab-item>  
     </mt-tabbar>  
@@ -21,31 +21,42 @@ export default {
       tabbarList:[
         {
           id:'nav_index',
+          router:'home',
           name:'首页', 
           src:require('../assets/images/fonts/首页.png'), 
           actSrc:require('../assets/images/fonts/首页-1.png'), 
         },
         {
           id:'nav_video',
+          router:'video',
           name:'视频', 
           src:require('../assets/images/fonts/视频.png'), 
           actSrc:require('../assets/images/fonts/视频-1.png'), 
         },
         {
           id:'nav_collection',
+          router:'collect',
           name:'收藏', 
           src:require('../assets/images/fonts/收藏.png'), 
           actSrc:require('../assets/images/fonts/收藏-1.png'), 
         },
         {
           id:'nav_user',
+          router:'users',
           name:'我的', 
           src:require('../assets/images/fonts/我的.png'), 
           actSrc:require('../assets/images/fonts/我的-1.png'), 
         }
        ]
     };  
-  }  
+  },
+  created(){
+    this.$root.Bus.$on('selChange',val=>{
+      this.selected = val;
+      console.log(val);
+    })
+  }
+  
 };  
 </script> 
 

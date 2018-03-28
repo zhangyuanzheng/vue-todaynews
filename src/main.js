@@ -6,12 +6,14 @@ import 'mint-ui/lib/style.css'
 import App from './App'
 import router from './router'
 import store from './store/index'
+import VueResource from 'vue-resource'
 // import 'lib-flexible'
 Vue.use(MintUI)
-
+Vue.use(VueResource)
 
 require('!style-loader!css-loader!less-loader!./assets/style/main.less');
 require('!style-loader!css-loader!less-loader!./assets/style/animate.min.css');
+require('!style-loader!css-loader!less-loader!./assets/style/transition.css');
 
 Vue.config.productionTip = false
 
@@ -21,6 +23,11 @@ new Vue({
   el: '#app',
   router,
   store,
+  data(){
+    return{
+        Bus: new Vue()
+    }
+  },
   beforeCreate(){
     // var winW = document.documentElement.clientWidth || document.body.clientWidth;
     // document.documentElement.style.fontSize = winW /3.75 + "px";

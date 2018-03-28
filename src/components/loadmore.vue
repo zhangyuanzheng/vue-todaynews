@@ -76,7 +76,7 @@ export default {
     ...mapGetters(["newsDetail"]),
     dataloading() {
       if (this.sel == this.type) {
-        console.log('dataloading');
+        // console.log('dataloading');
         let news = this.resData.newsLists;
         this.length = news.length;
         // console.log(news);
@@ -91,16 +91,16 @@ export default {
       }
     },
     handleTopChange(status) {
-      console.log(status);
+      // console.log(status);
       this.topStatus = status;
     },
     loadTop() {
-      console.log("loadTop");
+      // console.log("loadTop");
       //console.log(this.list.unshift('aa'));
       this.dataloading();
     },
     loadBottom() {
-      console.log('loadBottom');
+      // console.log('loadBottom');
       this.loading = false;
       this.dataloading();
     }
