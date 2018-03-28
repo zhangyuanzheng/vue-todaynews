@@ -1,5 +1,5 @@
 <template>
-   <div id="index">
+   <div id="home">
         <div class='fixed'>
           <header>
             <div class="top_bar">
@@ -9,31 +9,25 @@
                 </div>
             </div>
           </header>
-          <nav-bar :sel='selected' @on-select-change='onSelectChange' :resData='resData'></nav-bar>
+          <nav-bar :sel='selected' @on-select-change='onSelectChange' :resData='resData' ></nav-bar>
         </div>
         
         <div class='container'>
           <mt-tab-container v-model="selected" swipeable>
-            <!-- <mt-tab-container-item id="1">
-                <load-more  :sel='selected' type='1' id='s1'></load-more>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="2">
-               <load-more  :sel='selected' type='2' id='s2'></load-more>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="3">
-               <load-more  :sel='selected' type='3' id='s3'></load-more>    
-            </mt-tab-container-item> -->
-
             <mt-tab-container-item :id="item.id" v-for="(item,index) in resData" :key='index'>
                 <load-more  :sel='selected' :type='item.id' :id ="'s'+index" :resData="resData[item.id-1]"></load-more>
             </mt-tab-container-item>
-
-
-            
           </mt-tab-container>
         </div> 
- 
       <tab-bar></tab-bar>  
+
+      <!-- <transition enter-active-class="fadeInRight" leave-active-class="fadeOutRight" mode="in-out"> -->
+      <transition name='slide' mode="in-out">
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
+      </transition>
+        
    </div>
 </template>
 
@@ -44,32 +38,34 @@ import navBar from "@/components/navbar";
 import loadMore from "@/components/loadmore";
 
 export default {
-  name: "index",
+  name: "home",
   components: { tabBar, navBar, loadMore },
   data() {
     return {
       hot_topic: "庆祝两会顺利召开",
       selected: "1",
       resData: [],
+      transitionName: "slide-right"
     };
   },
   methods: {
     onSelectChange(val) {
       this.selected = val;
       // console.log(this.selected)
-    },
-    
+    }
   },
-  mounted(){
+  mounted() {
     this.resData = this.$store.state;
-  }
+  },
+  
+   
 };
 </script> 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
-@import "../../assets/style/variable.less";
-#index {
+@import "../../../assets/style/variable.less";
+#home {
   header {
     width: 100%;
     background-color: @light-blue;
@@ -86,12 +82,13 @@ export default {
       .logo {
         width: 32%;
         height: 30px;
-        background: url(../../assets/images/fonts/logo.png) no-repeat 0 center;
+        background: url(../../../assets/images/fonts/logo.png) no-repeat 0
+          center;
         background-size: contain;
       }
       .search {
         width: 62%;
-        background: #fff url(../../assets/images/fonts/搜索.png) no-repeat 2%
+        background: #fff url(../../../assets/images/fonts/搜索.png) no-repeat 2%
           center;
         background-size: contain;
         border-radius: 20px;
@@ -128,6 +125,25 @@ export default {
     //     }
     //   }
     // }
+  }
+
+
+
+  .slide-enter-active,.slide-leave-active{
+      transition: all .3s ease;
+  }
+  .slide-enter-active{
+    opacity: 1;
+  }
+  .slide-leave-active{
+    opacity: 0;
+     -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+  }
+  .slide-enter,.slide-leave{
+    opacity: 0;
+     -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
   }
 }
 </style>

@@ -11,7 +11,7 @@
 
          <mt-tab-item :id="item.id" v-for='(item,index) in resData' :key='index'>{{item.type}}</mt-tab-item>
     </mt-navbar>
-    <div class='moreBtn'>
+    <div class='moreBtn' @click="$router.push('/index/home/channel')">
       <i> <img src='../assets/images/fonts/shadow.png' />  </i> 
       
     </div> 
